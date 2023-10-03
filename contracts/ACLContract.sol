@@ -1,24 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "openzeppelin-solidity/contracts/access/AccessControl.sol";
+import "openzeppelin-solidity/contracts/access/AccessControlEnumerable.sol";
+import "openzeppelin-solidity/contracts/access/Ownable.sol";
 
 // contract lưu role của người dùng
 
-contract ACLContract {
+contract ACLContract is Ownable, AccessControlEnumerable {
     bytes32 public constant DOCTOR_ROLE = keccak256("DOCTOR_ROLE");
     bytes32 public constant NURSE_ROLE = keccak256("NURSE_ROLE");
     AccessControl private _acl;
 
     constructor() {
-        _acl = new AccessControl();
+        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
-    function grantDoctorRole(address _user) public {
+    function grantDoctorRole(address _user) public onlyOwner {
         _acl.grantRole(DOCTOR_ROLE, _user);
     }
 
-    function grantNurseRole(address _user) public {
+    function grantNurseRole(address _user) public onlyOwner {
         _acl.grantRole(NURSE_ROLE, _user);
     }
 

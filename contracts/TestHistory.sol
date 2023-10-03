@@ -19,9 +19,10 @@ contract TestHistory is Ownable {
         uint256 timestamp;
     }
 
-    Test[] public testHistory;
+    mapping(address => Test[]) public testHistory;
 
     function addTest(
+        address patient,
         string memory _testName,
         string memory _testResult
     ) public {
@@ -35,10 +36,11 @@ contract TestHistory is Ownable {
             timestamp: block.timestamp
         });
 
-        testHistory.push(newTest);
+        testHistory[patient].push(newTest);
     }
 
     function getTestHistory(
+        address patient,
         uint256 index
     ) public view returns (string memory, string memory, uint256) {
         require(
@@ -46,9 +48,9 @@ contract TestHistory is Ownable {
                 private_acl.hasDoctorOrNurseRole(_msgSender()),
             "Only nurses and doctors can read each other's test history"
         );
-        require(index < testHistory.length, "Invalid index");
+        require(index < testHistory[patient].length, "Invalid index");
 
-        Test memory test = testHistory[index];
+        Test memory test = testHistory[patient][index];
         return (test.testName, test.testResult, test.timestamp);
     }
 }
