@@ -40,12 +40,8 @@ contract VaccinationHistory is Ownable {
     }
 
     function getVaccinHistory(
-        address patient,
-        uint256 index
-    ) public view returns (string memory, string memory, uint256) {
-        require(index < vaccHistory[patient].length, "Invalid index");
-
-        Vaccination memory vacc = vaccHistory[patient][index];
-        return (vacc.vacName, vacc.vacAmount, vacc.timestamp);
+        address _patientAddress
+    ) public view returns (Vaccination[] memory) {
+        return vaccHistory[_patientAddress];
     }
 }

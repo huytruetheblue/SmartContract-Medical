@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import "openzeppelin-solidity/contracts/access/Ownable.sol";
 import "./ACLContract.sol";
-import "hardhat/console.sol";
 
 // Lịch sử xét nghiệm
 
@@ -41,11 +40,8 @@ contract TestHistory is Ownable {
     }
 
     function getTestHistory(
-        address patient,
-        uint256 index
-    ) public view returns (string memory, string memory, uint256) {
-        require(index < testHistory[patient].length, "Invalid index");
-        Test memory test = testHistory[patient][index];
-        return (test.testName, test.testResult, test.timestamp);
+        address patient
+    ) public view returns (Test[] memory) {
+        return testHistory[patient];
     }
 }

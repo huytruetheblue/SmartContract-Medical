@@ -42,11 +42,8 @@ contract Precription is Ownable {
     }
 
     function getPrecription(
-        address patient,
-        uint256 index
-    ) public view returns (string[] memory, string[] memory, uint256) {
-        require(index < precription[patient].length, "Invalid index");
-        Precriptions storage p = precription[patient][index];
-        return (p.medicalName, p.amount, p.timestamp);
+        address _patientAddress
+    ) public view returns (Precriptions[] memory) {
+        return precription[_patientAddress];
     }
 }

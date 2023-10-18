@@ -40,12 +40,8 @@ contract DiagnosisByImageing is Ownable {
     }
 
     function getDiaImageHistory(
-        address patient,
-        uint256 index
-    ) public view returns (string memory, string memory, uint256) {
-        require(index < diaImage[patient].length, "Invalid index");
-
-        DiaImage memory diaimage = diaImage[patient][index];
-        return (diaimage.diaName, diaimage.image, diaimage.timestamp);
+        address _patientAddress
+    ) public view returns (DiaImage[] memory) {
+        return diaImage[_patientAddress];
     }
 }
