@@ -9,26 +9,24 @@ import "openzeppelin-solidity/contracts/access/Ownable.sol";
 contract ACLContract is Ownable, AccessControlEnumerable {
     bytes32 public constant DOCTOR_ROLE = keccak256("DOCTOR_ROLE");
     bytes32 public constant NURSE_ROLE = keccak256("NURSE_ROLE");
-    AccessControl private _acl;
 
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
     }
 
     function grantDoctorRole(address _user) public onlyOwner {
-        _acl.grantRole(DOCTOR_ROLE, _user);
+        grantRole(DOCTOR_ROLE, _user);
     }
 
     function grantNurseRole(address _user) public onlyOwner {
-        _acl.grantRole(NURSE_ROLE, _user);
+        grantRole(NURSE_ROLE, _user);
     }
 
     function hasDoctorRole(address _user) public view returns (bool) {
-        return _acl.hasRole(DOCTOR_ROLE, _user);
+        return hasRole(DOCTOR_ROLE, _user);
     }
 
     function hasDoctorOrNurseRole(address _user) public view returns (bool) {
-        return
-            _acl.hasRole(DOCTOR_ROLE, _user) || _acl.hasRole(NURSE_ROLE, _user);
+        return hasRole(DOCTOR_ROLE, _user) || hasRole(NURSE_ROLE, _user);
     }
 }

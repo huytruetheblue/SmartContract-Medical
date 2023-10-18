@@ -19,9 +19,10 @@ contract VaccinationHistory is Ownable {
         uint256 timestamp;
     }
 
-    Vaccination[] public vaccHistory;
+    mapping(address => Vaccination[]) public vaccHistory;
 
     function addVaccin(
+        address patient,
         string memory _vacName,
         string memory _vacAmount
     ) public {
@@ -35,20 +36,16 @@ contract VaccinationHistory is Ownable {
             timestamp: block.timestamp
         });
 
-        vaccHistory.push(newVacc);
+        vaccHistory[patient].push(newVacc);
     }
 
     function getVaccinHistory(
+        address patient,
         uint256 index
     ) public view returns (string memory, string memory, uint256) {
-        require(
-            owner() == _msgSender() ||
-                private_acl.hasDoctorOrNurseRole(_msgSender()),
-            "Only nurses and doctors can read each other's Vaccination history"
-        );
-        require(index < vaccHistory.length, "Invalid index");
+        require(index < vaccHistory[patient].length, "Invalid index");
 
-        Vaccination memory vacc = vaccHistory[index];
+        Vaccination memory vacc = vaccHistory[patient][index];
         return (vacc.vacName, vacc.vacAmount, vacc.timestamp);
     }
 }

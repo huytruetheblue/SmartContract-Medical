@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "openzeppelin-solidity/contracts/access/Ownable.sol";
 import "./ACLContract.sol";
+import "hardhat/console.sol";
 
 // Lịch sử xét nghiệm
 
@@ -43,13 +44,7 @@ contract TestHistory is Ownable {
         address patient,
         uint256 index
     ) public view returns (string memory, string memory, uint256) {
-        require(
-            owner() == _msgSender() ||
-                private_acl.hasDoctorOrNurseRole(_msgSender()),
-            "Only nurses and doctors can read each other's test history"
-        );
         require(index < testHistory[patient].length, "Invalid index");
-
         Test memory test = testHistory[patient][index];
         return (test.testName, test.testResult, test.timestamp);
     }
