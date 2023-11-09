@@ -15,38 +15,60 @@ contract MedicalRecords is Ownable {
 
     struct MedicalRecord {
         string patientName;
-        string date;
+        string patientAddress;
+        string patientBirthday;
+        bool patientGender;
+        string patientNumber;
         uint256 timestamp;
     }
 
-    mapping(address => MedicalRecord[]) private medicalRecords;
+    mapping(address => MedicalRecord) private medicalRecords;
 
     event MedicalRecordAdded(
-        address indexed patientAddress,
+        address indexed patient,
         string patientName,
-        string date
+        string patientAddress,
+        string patientBirthday,
+        bool patientGender,
+        string patientNumber,
+        uint256 timestamp
     );
 
     function addMedicalRecord(
+        address patient,
         string memory _patientName,
-        string memory _date
+        string memory _patientAddress,
+        string memory _patientBirthday,
+        bool _patientGender,
+        string memory _patientNumber
     ) public {
         require(
             private_acl.hasDoctorOrNurseRole(_msgSender()),
-            "Only Doctor or Nurse can add new MedicalRecord"
+            "Only Doctor or Nurse can create new MedicalRecord"
         );
         MedicalRecord memory newRecord = MedicalRecord(
             _patientName,
-            _date,
+            _patientAddress,
+            _patientBirthday,
+            _patientGender,
+            _patientNumber,
             block.timestamp
         );
-        medicalRecords[msg.sender].push(newRecord);
-        emit MedicalRecordAdded(msg.sender, _patientName, _date);
+        medicalRecords[patient] = newRecord;
+        emit MedicalRecordAdded(
+            msg.sender,
+            _patientName,
+            _patientAddress,
+            _patientBirthday,
+            _patientGender,
+            _patientNumber,
+            block.timestamp
+        );
     }
 
     function getMedicalRecords(
         address _patientAddress
-    ) public view returns (MedicalRecord[] memory) {
+    ) public view returns (MedicalRecord memory) {
         return medicalRecords[_patientAddress];
     }
 }

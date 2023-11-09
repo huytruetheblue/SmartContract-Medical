@@ -14,7 +14,6 @@ contract MedicalExaminations is Ownable {
     struct MedicalExamination {
         string sympton;
         string diagnostic;
-        address medicalRecord;
         uint256 timestamp;
     }
 
@@ -23,38 +22,42 @@ contract MedicalExaminations is Ownable {
         address indexed examinationAddress,
         string sympton,
         string diagnostic,
-        address medicalRecord,
         uint256 timestamp
     );
 
     function addMedicalExamination(
+        address patient,
         string memory _sympton,
-        string memory _diagnostic,
-        address _medicalRecord
+        string memory _diagnostic
     ) public {
         require(
             private_acl.hasDoctorOrNurseRole(_msgSender()),
-            "Only Doctor or Nurse can add new Precription"
+            "Only Doctor or Nurse can add new Prescription"
         );
         MedicalExamination memory newRecord = MedicalExamination(
             _sympton,
             _diagnostic,
-            _medicalRecord,
             block.timestamp
         );
-        medicalExaminations[msg.sender].push(newRecord);
+        medicalExaminations[patient].push(newRecord);
         emit MediCalExaminationAdded(
-            msg.sender,
+            patient,
             _sympton,
             _diagnostic,
-            _medicalRecord,
             block.timestamp
         );
     }
 
-    function getMedicalRecords(
+    function getAllMedicalExaminations(
         address _patientAddress
     ) public view returns (MedicalExamination[] memory) {
         return medicalExaminations[_patientAddress];
+    }
+
+    function getMedicalExamination(
+        address _patientAddress,
+        uint256 _index
+    ) public view returns (MedicalExamination memory) {
+        return medicalExaminations[_patientAddress][_index];
     }
 }
