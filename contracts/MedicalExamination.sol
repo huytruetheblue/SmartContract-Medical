@@ -15,15 +15,10 @@ contract MedicalExaminations is Ownable {
         string sympton;
         string diagnostic;
         uint256 timestamp;
+        address sender;
     }
 
     mapping(address => MedicalExamination[]) private medicalExaminations;
-    event MediCalExaminationAdded(
-        address indexed examinationAddress,
-        string sympton,
-        string diagnostic,
-        uint256 timestamp
-    );
 
     function addMedicalExamination(
         address patient,
@@ -37,15 +32,10 @@ contract MedicalExaminations is Ownable {
         MedicalExamination memory newRecord = MedicalExamination(
             _sympton,
             _diagnostic,
-            block.timestamp
+            block.timestamp,
+            _msgSender()
         );
         medicalExaminations[patient].push(newRecord);
-        emit MediCalExaminationAdded(
-            patient,
-            _sympton,
-            _diagnostic,
-            block.timestamp
-        );
     }
 
     function getAllMedicalExaminations(

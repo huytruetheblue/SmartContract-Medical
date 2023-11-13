@@ -15,25 +15,27 @@ contract VaccinationHistory is Ownable {
 
     struct Vaccination {
         string vacName;
-        string vacAmount;
+        string vacType;
         uint256 timestamp;
+        address sender;
     }
 
     mapping(address => Vaccination[]) public vaccHistory;
 
     function addVaccin(
         address patient,
-        string memory _vacName,
-        string memory _vacAmount
+        string memory _vacType,
+        string memory _vacName
     ) public {
         require(
             private_acl.hasDoctorOrNurseRole(_msgSender()),
             "Only Doctor or Nurse can add new Vaccination"
         );
         Vaccination memory newVacc = Vaccination({
+            vacType: _vacType,
             vacName: _vacName,
-            vacAmount: _vacAmount,
-            timestamp: block.timestamp
+            timestamp: block.timestamp,
+            sender: _msgSender()
         });
 
         vaccHistory[patient].push(newVacc);

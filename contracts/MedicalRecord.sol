@@ -20,19 +20,10 @@ contract MedicalRecords is Ownable {
         bool patientGender;
         string patientNumber;
         uint256 timestamp;
+        address sender;
     }
 
     mapping(address => MedicalRecord) private medicalRecords;
-
-    event MedicalRecordAdded(
-        address indexed patient,
-        string patientName,
-        string patientAddress,
-        string patientBirthday,
-        bool patientGender,
-        string patientNumber,
-        uint256 timestamp
-    );
 
     function addMedicalRecord(
         address patient,
@@ -52,18 +43,10 @@ contract MedicalRecords is Ownable {
             _patientBirthday,
             _patientGender,
             _patientNumber,
-            block.timestamp
+            block.timestamp,
+            _msgSender()
         );
         medicalRecords[patient] = newRecord;
-        emit MedicalRecordAdded(
-            msg.sender,
-            _patientName,
-            _patientAddress,
-            _patientBirthday,
-            _patientGender,
-            _patientNumber,
-            block.timestamp
-        );
     }
 
     function getMedicalRecords(

@@ -19,14 +19,15 @@ async function main() {
   // console.log("TestHistory address: ", testHistory.address);
   // Config.setConfig(network + ".TestHistory", testHistory.address);
 
-  // const VaccinationHistory = await ethers.getContractFactory(
-  //   "VaccinationHistory"
-  // );
-  // const vaccinationHistory = await VaccinationHistory.deploy(
-  //   "0xea4F2Ba39F10586a5AD66481fDFF0E201fD31DE9"
-  // );
-  // console.log("TestHistory address: ", vaccinationHistory.address);
-  // Config.setConfig(network + ".VaccinationHistory", vaccinationHistory.address);
+  const VaccinationHistory = await ethers.getContractFactory(
+    "VaccinationHistory"
+  );
+  const vaccinationHistory = await VaccinationHistory.deploy(
+    "0xea4F2Ba39F10586a5AD66481fDFF0E201fD31DE9"
+  );
+  console.log("TestHistory address: ", vaccinationHistory.address);
+  Config.setConfig(network + ".VaccinationHistory", vaccinationHistory.address);
+  await Config.updateConfig();
 
   // const Prescription = await ethers.getContractFactory("Prescription");
   // const prescription = await Prescription.deploy(
@@ -44,18 +45,18 @@ async function main() {
   // Config.setConfig(network + ".MedicalRecords", medicalRecord.address);
   // await Config.updateConfig();
 
-  const MedicalExaminations = await ethers.getContractFactory(
-    "MedicalExaminations"
-  );
-  const medicalExaminations = await MedicalExaminations.deploy(
-    "0xea4F2Ba39F10586a5AD66481fDFF0E201fD31DE9"
-  );
-  console.log("MedicalExaminations address: ", medicalExaminations.address);
-  Config.setConfig(
-    network + ".MedicalExaminations",
-    medicalExaminations.address
-  );
-  await Config.updateConfig();
+  // const MedicalExaminations = await ethers.getContractFactory(
+  //   "MedicalExaminations"
+  // );
+  // const medicalExaminations = await MedicalExaminations.deploy(
+  //   "0xea4F2Ba39F10586a5AD66481fDFF0E201fD31DE9"
+  // );
+  // console.log("MedicalExaminations address: ", medicalExaminations.address);
+  // Config.setConfig(
+  //   network + ".MedicalExaminations",
+  //   medicalExaminations.address
+  // );
+  // await Config.updateConfig();
 
   // const DiagnosisByImageing = await ethers.getContractFactory(
   //   "DiagnosisByImageing"

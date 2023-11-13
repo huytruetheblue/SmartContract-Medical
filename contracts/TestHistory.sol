@@ -17,6 +17,7 @@ contract TestHistory is Ownable {
         string testName;
         string testResult;
         uint256 timestamp;
+        address sender;
     }
 
     mapping(address => Test[]) public testHistory;
@@ -33,6 +34,7 @@ contract TestHistory is Ownable {
         Test memory newTest = Test({
             testName: _testName,
             testResult: _testResult,
+            sender: _msgSender(),
             timestamp: block.timestamp
         });
 
